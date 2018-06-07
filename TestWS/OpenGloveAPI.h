@@ -39,8 +39,7 @@ public:
 
 		int actuator = -1;
 
-
-		for (auto mapping = (*(*(profile.Mappings)).KeyValueOfstringstring).begin();
+			for (auto mapping = (*(*(profile.Mappings)).KeyValueOfstringstring).begin();
 			mapping != (*(*(profile.Mappings)).KeyValueOfstringstring).end();
 			mapping++)
 		{
@@ -81,30 +80,22 @@ public:
 		}
 		std::cout << *selectedGlove.WebSocketPort << " " << *selectedGlove.Port << std::endl;
 		DataReceivers.push_back(new DataReceiver{ *selectedGlove.WebSocketPort, *selectedGlove.Port });
-		//_startCaptureData(selectedGlove, DataReceivers);
 	}
-	/*
-	void _startCaptureData(ns4__Glove selectedGlove, std::vector<DataReceiver*> dataReceivers) {
-		DataReceiver *DR;
-		//DR = new DataReceiver(*selectedGlove.WebSocketPort, *selectedGlove.Port);
-		dataReceivers.push_back(new DataReceiver(*selectedGlove.WebSocketPort, *selectedGlove.Port));
-		system("PAUSE");
-	}
-	*/
-	/*
+
+	
 	void stopCaptureData(ns4__Glove selectedGlove) {
 		if (DataReceivers.size() > 0) {
 			for (int i = 0; i < int(DataReceivers.size()); ++i) {
-				if (DataReceivers.at(i).getPort() == *selectedGlove.Port) {
+				if ((*DataReceivers.at(i)).getPort() == *selectedGlove.Port) {
 					
-					//DataReceivers.at(i).stop();
-				//	DataReceivers.erase(DataReceivers.begin()+i);
+					(*DataReceivers.at(i)).stop();
+					DataReceivers.erase(DataReceivers.begin()+i);
 					return;
 				}
 			}
 		}
 	}
-	*/
+	
 	
 };
 

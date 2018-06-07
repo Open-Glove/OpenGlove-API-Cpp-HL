@@ -47,9 +47,6 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
     <ClCompile Include="DataReceiver.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
@@ -62,8 +59,12 @@
     <ClCompile Include="stdsoap2.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="BasicHttpBinding_USCOREIOGService.nsmap" />
+    <None Include="..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\thread" />
   </ItemGroup>
 </Project>

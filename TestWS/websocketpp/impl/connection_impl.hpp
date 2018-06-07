@@ -1028,14 +1028,14 @@ void connection<config>::handle_read_frame(lib::error_code const & ec,
 
     if (m_alog.static_test(log::alevel::devel)) {
         std::stringstream s;
-        s << "p = " << p << " bytes transferred = " << bytes_transferred;
+       // s << "p = " << p << " bytes transferred = " << bytes_transferred;
         m_alog.write(log::alevel::devel,s.str());
     }
 
     while (p < bytes_transferred) {
         if (m_alog.static_test(log::alevel::devel)) {
             std::stringstream s;
-            s << "calling consume with " << bytes_transferred-p << " bytes";
+         //   s << "calling consume with " << bytes_transferred-p << " bytes";
             m_alog.write(log::alevel::devel,s.str());
         }
 
@@ -1043,7 +1043,7 @@ void connection<config>::handle_read_frame(lib::error_code const & ec,
 
         if (m_alog.static_test(log::alevel::devel)) {
             std::stringstream s;
-            s << "Processing Bytes: " << utility::to_hex(reinterpret_cast<uint8_t*>(m_buf)+p,bytes_transferred-p);
+       //     s << "Processing Bytes: " << utility::to_hex(reinterpret_cast<uint8_t*>(m_buf)+p,bytes_transferred-p);
             m_alog.write(log::alevel::devel,s.str());
         }
 
@@ -1055,7 +1055,7 @@ void connection<config>::handle_read_frame(lib::error_code const & ec,
 
         if (m_alog.static_test(log::alevel::devel)) {
             std::stringstream s;
-            s << "bytes left after consume: " << bytes_transferred-p;
+       //     s << "bytes left after consume: " << bytes_transferred-p;
             m_alog.write(log::alevel::devel,s.str());
         }
         if (consume_ec) {
@@ -1084,7 +1084,7 @@ void connection<config>::handle_read_frame(lib::error_code const & ec,
         if (m_processor->ready()) {
             if (m_alog.static_test(log::alevel::devel)) {
                 std::stringstream s;
-                s << "Complete message received. Dispatching";
+        //        s << "Complete message received. Dispatching";
                 m_alog.write(log::alevel::devel,s.str());
             }
 
@@ -1266,7 +1266,7 @@ lib::error_code connection<config>::process_handshake_request() {
 
         if (ec) {
             std::stringstream s;
-            s << "Processing error: " << ec << "(" << ec.message() << ")";
+          //  s << "Processing error: " << ec << "(" << ec.message() << ")";
             m_alog.write(log::alevel::devel, s.str());
 
             m_response.set_status(http::status_code::internal_server_error);
@@ -1395,8 +1395,8 @@ void connection<config>::handle_write_http_response(lib::error_code const & ec) 
         {*/
         if (!m_is_http) {
             std::stringstream s;
-            s << "Handshake ended with HTTP error: "
-              << m_response.get_status_code();
+          /*  s << "Handshake ended with HTTP error: "
+              << m_response.get_status_code();*/
             m_elog.write(log::elevel::rerror,s.str());
         } else {
             // if this was not a websocket connection, we have written
@@ -1838,10 +1838,10 @@ void connection<config>::write_frame() {
     if (m_alog.dynamic_test(log::alevel::frame_header)) {
         std::stringstream general,header,payload;
         
-        general << "Dispatching write containing " << m_current_msgs.size()
-                <<" message(s) containing ";
-        header << "Header Bytes: \n";
-        payload << "Payload Bytes: \n";
+       /*general << "Dispatching write containing " << m_current_msgs.size()
+                <<" message(s) containing ";*/
+       // header << "Header Bytes: \n";
+      //  payload << "Payload Bytes: \n";
         
         size_t hbytes = 0;
         size_t pbytes = 0;
@@ -1851,28 +1851,28 @@ void connection<config>::write_frame() {
             pbytes += m_current_msgs[i]->get_payload().size();
 
             
-            header << "[" << i << "] (" 
+        /*    header << "[" << i << "] (" 
                    << m_current_msgs[i]->get_header().size() << ") " 
-                   << utility::to_hex(m_current_msgs[i]->get_header()) << "\n";
+                   << utility::to_hex(m_current_msgs[i]->get_header()) << "\n";*/
 
             if (m_alog.static_test(log::alevel::frame_payload)) {
             if (m_alog.dynamic_test(log::alevel::frame_payload)) {
-                payload << "[" << i << "] (" 
+            /*    payload << "[" << i << "] (" 
                         << m_current_msgs[i]->get_payload().size() << ") ["<<m_current_msgs[i]->get_opcode()<<"] "
                         << (m_current_msgs[i]->get_opcode() == frame::opcode::text ? 
                                 m_current_msgs[i]->get_payload() : 
                                 utility::to_hex(m_current_msgs[i]->get_payload())
                            ) 
-                        << "\n";
+                        << "\n";*/
             }
             }  
         }
         
-        general << hbytes << " header bytes and " << pbytes << " payload bytes";
+     //   general << hbytes << " header bytes and " << pbytes << " payload bytes";
         
-        m_alog.write(log::alevel::frame_header,general.str());
-        m_alog.write(log::alevel::frame_header,header.str());
-        m_alog.write(log::alevel::frame_payload,payload.str());
+    //    m_alog.write(log::alevel::frame_header,general.str());
+    //    m_alog.write(log::alevel::frame_header,header.str());
+    //    m_alog.write(log::alevel::frame_payload,payload.str());
     }
     }
 
@@ -1939,7 +1939,7 @@ void connection<config>::process_control_frame(typename config::message_type::pt
     lib::error_code ec;
 
     std::stringstream s;
-    s << "Control frame received with opcode " << op;
+    //s << "Control frame received with opcode " << op;
     m_alog.write(log::alevel::control,s.str());
 
     if (m_state == session::state::closed) {
@@ -1979,13 +1979,13 @@ void connection<config>::process_control_frame(typename config::message_type::pt
         if (ec) {
             s.str("");
             if (config::drop_on_protocol_error) {
-                s << "Received invalid close code " << m_remote_close_code
-                  << " dropping connection per config.";
+             /*   s << "Received invalid close code " << m_remote_close_code
+                  << " dropping connection per config.";*/
                 m_elog.write(log::elevel::devel,s.str());
                 this->terminate(ec);
             } else {
-                s << "Received invalid close code " << m_remote_close_code
-                  << " sending acknowledgement and closing";
+             /*   s << "Received invalid close code " << m_remote_close_code
+                  << " sending acknowledgement and closing";*/
                 m_elog.write(log::elevel::devel,s.str());
                 ec = send_close_ack(close::status::protocol_error,
                     "Invalid close code");
@@ -2016,8 +2016,8 @@ void connection<config>::process_control_frame(typename config::message_type::pt
 
         if (m_state == session::state::open) {
             s.str("");
-            s << "Received close frame with code " << m_remote_close_code
-              << " and reason " << m_remote_close_reason;
+          /*  s << "Received close frame with code " << m_remote_close_code
+              << " and reason " << m_remote_close_reason;*/
             m_alog.write(log::alevel::devel,s.str());
 
             ec = send_close_ack();
@@ -2096,8 +2096,8 @@ lib::error_code connection<config>::send_close_frame(close::status::value code,
     }
 
     std::stringstream s;
-    s << "Closing with code: " << m_local_close_code << ", and reason: "
-      << m_local_close_reason;
+    /*s << "Closing with code: " << m_local_close_code << ", and reason: "
+      << m_local_close_reason;*/
     m_alog.write(log::alevel::devel,s.str());
 
     message_ptr msg = m_msg_manager->get_message();
@@ -2215,8 +2215,8 @@ void connection<config>::write_push(typename config::message_type::ptr msg)
 
     if (m_alog.static_test(log::alevel::devel)) {
         std::stringstream s;
-        s << "write_push: message count: " << m_send_queue.size()
-          << " buffer size: " << m_send_buffer_size;
+        /*s << "write_push: message count: " << m_send_queue.size()
+          << " buffer size: " << m_send_buffer_size;*/
         m_alog.write(log::alevel::devel,s.str());
     }
 }
@@ -2237,8 +2237,8 @@ typename config::message_type::ptr connection<config>::write_pop()
 
     if (m_alog.static_test(log::alevel::devel)) {
         std::stringstream s;
-        s << "write_pop: message count: " << m_send_queue.size()
-          << " buffer size: " << m_send_buffer_size;
+      /*  s << "write_pop: message count: " << m_send_queue.size()
+          << " buffer size: " << m_send_buffer_size;*/
         m_alog.write(log::alevel::devel,s.str());
     }
     return msg;
@@ -2257,30 +2257,30 @@ void connection<config>::log_open_result()
     }
 
     // Connection Type
-    s << (version == -1 ? "HTTP" : "WebSocket") << " Connection ";
+   // s << (version == -1 ? "HTTP" : "WebSocket") << " Connection ";
 
     // Remote endpoint address
-    s << transport_con_type::get_remote_endpoint() << " ";
+  //  s << transport_con_type::get_remote_endpoint() << " ";
 
     // Version string if WebSocket
     if (version != -1) {
-        s << "v" << version << " ";
+   //     s << "v" << version << " ";
     }
 
     // User Agent
     std::string ua = m_request.get_header("User-Agent");
     if (ua.empty()) {
-        s << "\"\" ";
+      //  s << "\"\" ";
     } else {
         // check if there are any quotes in the user agent
-        s << "\"" << utility::string_replace_all(ua,"\"","\\\"") << "\" ";
+       // s << "\"" << utility::string_replace_all(ua,"\"","\\\"") << "\" ";
     }
 
     // URI
-    s << (m_uri ? m_uri->get_resource() : "NULL") << " ";
+  //  s << (m_uri ? m_uri->get_resource() : "NULL") << " ";
 
     // Status code
-    s << m_response.get_status_code();
+   // s << m_response.get_status_code();
 
     m_alog.write(log::alevel::connect,s.str());
 }
@@ -2290,11 +2290,11 @@ void connection<config>::log_close_result()
 {
     std::stringstream s;
 
-    s << "Disconnect "
+   /* s << "Disconnect "
       << "close local:[" << m_local_close_code
       << (m_local_close_reason.empty() ? "" : ","+m_local_close_reason)
       << "] remote:[" << m_remote_close_code
-      << (m_remote_close_reason.empty() ? "" : ","+m_remote_close_reason) << "]";
+      << (m_remote_close_reason.empty() ? "" : ","+m_remote_close_reason) << "]";*/
 
     m_alog.write(log::alevel::disconnect,s.str());
 }
@@ -2307,33 +2307,33 @@ void connection<config>::log_fail_result()
     int version = processor::get_websocket_version(m_request);
 
     // Connection Type
-    s << "WebSocket Connection ";
+    //s << "WebSocket Connection ";
 
     // Remote endpoint address & WebSocket version
     s << transport_con_type::get_remote_endpoint();
     if (version < 0) {
-        s << " -";
+ //       s << " -";
     } else {
-        s << " v" << version;
+//        s << " v" << version;
     }
 
     // User Agent
     std::string ua = m_request.get_header("User-Agent");
     if (ua.empty()) {
-        s << " \"\" ";
+   //     s << " \"\" ";
     } else {
         // check if there are any quotes in the user agent
-        s << " \"" << utility::string_replace_all(ua,"\"","\\\"") << "\" ";
+ //       s << " \"" << utility::string_replace_all(ua,"\"","\\\"") << "\" ";
     }
 
     // URI
-    s << (m_uri ? m_uri->get_resource() : "-");
+ //   s << (m_uri ? m_uri->get_resource() : "-");
 
     // HTTP Status code
-    s  << " " << m_response.get_status_code();
+ //   s  << " " << m_response.get_status_code();
     
     // WebSocket++ error code & reason
-    s << " " << m_ec << " " << m_ec.message();
+ //   s << " " << m_ec << " " << m_ec.message();
 
     m_alog.write(log::alevel::fail,s.str());
 }
@@ -2348,20 +2348,20 @@ void connection<config>::log_http_result() {
     }  
 
     // Connection Type
-    s << (m_request.get_header("host").empty() ? "-" : m_request.get_header("host"))
+  /*  s << (m_request.get_header("host").empty() ? "-" : m_request.get_header("host"))
       << " " << transport_con_type::get_remote_endpoint()
       << " \"" << m_request.get_method() 
       << " " << (m_uri ? m_uri->get_resource() : "-") 
       << " " << m_request.get_version() << "\" " << m_response.get_status_code()
-      << " " << m_response.get_body().size();
+      << " " << m_response.get_body().size();*/
     
     // User Agent
     std::string ua = m_request.get_header("User-Agent");
     if (ua.empty()) {
-        s << " \"\" ";
+  //      s << " \"\" ";
     } else {
         // check if there are any quotes in the user agent
-        s << " \"" << utility::string_replace_all(ua,"\"","\\\"") << "\" ";
+  //      s << " \"" << utility::string_replace_all(ua,"\"","\\\"") << "\" ";
     }
 
     m_alog.write(log::alevel::http,s.str());
