@@ -15,6 +15,9 @@ typedef void(*gyroscopeFunction)(float, float, float);
 typedef void(*magnometerFunction)(float, float, float);
 typedef void(*imu_attitudeFunction)(float, float, float);
 typedef void(*imu_ValuesFunction)(float, float, float, float, float, float, float, float, float);
+typedef void(*quaternionFunction)(float, float, float);
+/** Brazo + antebrazo: Q,w1,x1,y1,z1,w2,x2,y2,z2 */
+typedef void(*dualQuaternionFunction)(float, float, float, float, float, float, float, float);
 
 #ifndef  DATARECEIVER_H
 #define DATARECEIVER_H
@@ -51,6 +54,12 @@ public:
 
 	void setMagnoFunction(magnometerFunction func);
 	magnometerFunction getMagnoFunction();
+
+	void setQuaternionFunction(quaternionFunction func);
+	quaternionFunction getQuaternionFunction();
+
+	void setDualQuaternionFunction(dualQuaternionFunction func);
+	dualQuaternionFunction getDualQuaternionFunction();
 
 	std::string getPort();
 	void readData();

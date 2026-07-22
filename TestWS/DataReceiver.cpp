@@ -24,6 +24,8 @@ gyroscopeFunction gyroFunction;
 magnometerFunction magnoFunction;
 imu_ValuesFunction imuValuesFunction;
 imu_attitudeFunction attitudeFunction;
+quaternionFunction quatFunction;
+dualQuaternionFunction dualQuatFunction;
 
 
 int test = 0;
@@ -73,6 +75,18 @@ void xn_message(client * c, websocketpp::connection_hdl hdl, message_ptr msg)
 			imuValuesFunction(stof(words[1]), stof(words[2]), stof(words[3]), stof(words[4]), stof(words[5]), stof(words[6]), stof(words[7]), stof(words[8]), stof(words[9]));
 		}
 		break;
+	case 'q':
+		if (quatFunction != NULL && words.size() >= 4) {
+			quatFunction(stof(words[1]), stof(words[2]), stof(words[3]));
+		}
+		break;
+	case 'Q':
+		if (dualQuatFunction != NULL && words.size() == 9) {
+			dualQuatFunction(
+				stof(words[1]), stof(words[2]), stof(words[3]), stof(words[4]),
+				stof(words[5]), stof(words[6]), stof(words[7]), stof(words[8]));
+		}
+		break;
 	default:
 		std::cout << "Format doesn't exist" << std::endl;
 	}
@@ -106,6 +120,18 @@ void DataReceiver::on_message(client * c, websocketpp::connection_hdl hdl, messa
 	case 'z':
 		if (imuValuesFunction != NULL) {
 			imuValuesFunction(stof(words[1]), stof(words[2]), stof(words[3]), stof(words[4]), stof(words[5]), stof(words[6]), stof(words[7]), stof(words[8]), stof(words[9]));
+		}
+		break;
+	case 'q':
+		if (quatFunction != NULL && words.size() >= 4) {
+			quatFunction(stof(words[1]), stof(words[2]), stof(words[3]));
+		}
+		break;
+	case 'Q':
+		if (dualQuatFunction != NULL && words.size() == 9) {
+			dualQuatFunction(
+				stof(words[1]), stof(words[2]), stof(words[3]), stof(words[4]),
+				stof(words[5]), stof(words[6]), stof(words[7]), stof(words[8]));
 		}
 		break;
 	default:
@@ -226,6 +252,26 @@ void DataReceiver::setMagnoFunction(magnometerFunction func)
 magnometerFunction DataReceiver::getMagnoFunction()
 {
 	return magnoFunction;
+}
+
+void DataReceiver::setQuaternionFunction(quaternionFunction func)
+{
+	quatFunction = func;
+}
+
+quaternionFunction DataReceiver::getQuaternionFunction()
+{
+	return quatFunction;
+}
+
+void DataReceiver::setDualQuaternionFunction(dualQuaternionFunction func)
+{
+	dualQuatFunction = func;
+}
+
+dualQuaternionFunction DataReceiver::getDualQuaternionFunction()
+{
+	return dualQuatFunction;
 }
 
 std::string DataReceiver::getPort()
